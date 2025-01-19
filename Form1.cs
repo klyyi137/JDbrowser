@@ -20,6 +20,7 @@ namespace JDBrowser
         private async void InitializeWebView()
         {
             await webView21.EnsureCoreWebView2Async(null);
+            webView21.CoreWebView2.Settings.UserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 8_3 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12F70 Safari/600.1.4";
             webView21.CoreWebView2.Navigate("http://bean.m.jd.com/bean/signIndex.action");
             webView21.CoreWebView2.NavigationCompleted += WebView21_NavigationCompleted;
         }
@@ -35,25 +36,50 @@ namespace JDBrowser
 
         private void InitializeUIComponents()
         {
+            Label urlLabel = new Label();
+            urlLabel.Text = "ÍøÖ·:";
+            urlLabel.Width = 80;
+            urlLabel.Location = new System.Drawing.Point(520, 10);
+            this.Controls.Add(urlLabel);
+
+            TextBox urlTextBox = new TextBox();
+            urlTextBox.Location = new System.Drawing.Point(600, 10);
+            urlTextBox.Width = 300;
+            this.Controls.Add(urlTextBox);
+
+            Button navigateButton = new Button();
+            navigateButton.Text = "×ªµ½";
+            navigateButton.Location = new System.Drawing.Point(910, 10);
+            navigateButton.Click += (sender, e) =>
+            {
+                string url = urlTextBox.Text;
+                if (!url.StartsWith("http://") && !url.StartsWith("https://"))
+                {
+                    url = "http://" + url;
+                }
+                webView21.CoreWebView2.Navigate(url);
+            };
+            this.Controls.Add(navigateButton);
+
             Label ptKeyLabel = new Label();
             ptKeyLabel.Text = "pt_key:";
             ptKeyLabel.Width = 80;
-            ptKeyLabel.Location = new System.Drawing.Point(520, 10);
+            ptKeyLabel.Location = new System.Drawing.Point(520, 40);
             this.Controls.Add(ptKeyLabel);
 
             ptKeyTextBox = new TextBox();
-            ptKeyTextBox.Location = new System.Drawing.Point(600, 10);
+            ptKeyTextBox.Location = new System.Drawing.Point(600, 40);
             ptKeyTextBox.Width = 300;
             this.Controls.Add(ptKeyTextBox);
 
             Label ptPinLabel = new Label();
             ptPinLabel.Text = "pt_pin:";
             ptPinLabel.Width = 80;
-            ptPinLabel.Location = new System.Drawing.Point(520, 40);
+            ptPinLabel.Location = new System.Drawing.Point(520, 70);
             this.Controls.Add(ptPinLabel);
 
             ptPinTextBox = new TextBox();
-            ptPinTextBox.Location = new System.Drawing.Point(600, 40);
+            ptPinTextBox.Location = new System.Drawing.Point(600, 70);
             ptPinTextBox.Width = 300;
             this.Controls.Add(ptPinTextBox);
 
